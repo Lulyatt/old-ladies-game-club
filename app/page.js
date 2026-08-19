@@ -1,4 +1,8 @@
+import { gameOfTheMonth } from "@/data/game-of-the-month";
+import GameOfTheMonth from "@/components/game-of-the-month";
+
 export default function Home() {
+
   return (
     <main className="flex flex-1 flex-col">
       {/* Full-width hero */}
@@ -6,21 +10,21 @@ export default function Home() {
         <img
           src="/hero.png"
           alt="Old Ladies Game Club"
-          className="w-full h-auto]"
+          className="w-full h-auto"
         />
         <div className="px-6 py-12 text-center">
           <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
-            Old Ladies Game Club
+            The Old Ladies Game Club
           </h1>
           <p className="mx-auto mt-4 max-w-xl text-lg text-muted-foreground">
-            Pick a game. Play it. Come back. Talk about it.
+            Pick a game. Play it. Talk about it.
           </p>
         </div>
       </section>
 
       {/* Later sections can be constrained */}
-      <section className="mx-auto w-full max-w-5xl px-6">
-        {/* Game of the Month goes here */}
+      <section className="mx-auto w-full max-w-5xl px-6 ">
+      <GameOfTheMonth game={gameOfTheMonth} />
       </section>
     </main>
   ); }

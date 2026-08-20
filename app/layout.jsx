@@ -1,4 +1,5 @@
 import { Geist, Geist_Mono } from "next/font/google";
+import { robotoSlab } from "@/lib/fonts";
 import "./globals.css";
 import Navbar from "@/components/navbar";
 
@@ -14,14 +15,14 @@ const geistMono = Geist_Mono({
 
 export const metadata = {
   title: "The Old Ladies Game Club",
-  description: "Pick a game. Play it. Talk about it.",
+  description: "Pick a game. Play it. Come back. Talk about it.",
 };
 
 export default function RootLayout({ children }) {
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${robotoSlab.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
         <Navbar />

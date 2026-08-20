@@ -5,12 +5,19 @@ export default function Home() {
 
   return (
     <main className="flex flex-1 flex-col">
-      {/* Full-width hero */}
+
       <section className="w-full">
         <img
           src="/hero.png"
           alt="Old Ladies Game Club"
           className="w-full h-auto"
+        />
+
+
+        <img
+          src="/pagedivider.png"
+          alt=""
+          className="block w-full h-[52px]"
         />
         <div className="px-6 py-12 text-center">
           <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
@@ -20,11 +27,22 @@ export default function Home() {
             Pick a game. Play it. Talk about it.
           </p>
         </div>
+
       </section>
 
-      {/* Later sections can be constrained */}
-      <section className="mx-auto w-full max-w-5xl px-6 ">
-      <GameOfTheMonth game={gameOfTheMonth} />
+
+      <section className="relative w-full min-h-[855px]">
+
+        <div
+          className="absolute inset-0 bg-[url('/blankroom.png')] bg-cover bg-top bg-no-repeat"
+          aria-hidden
+        />
+        
+        {/* Content sits above background */}
+        <div className="relative z-10 mx-auto w-full max-w-5xl px-6 py-12">
+          <GameOfTheMonth game={gameOfTheMonth} />
+        </div>
       </section>
     </main>
-  ); }
+  );
+}

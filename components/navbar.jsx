@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { robotoSlab } from "@/lib/fonts";
 
 const navLinks = [
   { label: "Home", href: "/" },
@@ -12,11 +13,11 @@ export default function Navbar() {
   const pathname = usePathname();
 
   return (
-    <header className="sticky top-0 z-50 border-6 border-club-wood-dark bg-club-wood shadow-[0_2px_8px_#2a1810aa]">
+    <header className="sticky top-0 z-50 border-b-4 border-club-wood-dark bg-club-wood bg-[length:95%_auto] bg-repeat bg-center bg-no-repeat bg-[linear-gradient(rgba(0,0,0,0.25),rgba(0,0,0,0.25)),url('/navbar.png')]">
       <nav className="mx-auto flex w-full max-w-5xl items-center justify-between px-6 py-3">
         <Link
           href="/"
-          className="text-base font-bold uppercase tracking-wider text-club-poster-text transition-opacity hover:opacity-90"
+          className={`${robotoSlab.className} text-base font-black uppercase tracking-wider text-club-poster-text transition-opacity hover:opacity-90`}
         >
           The Old Ladies Game Club
         </Link>

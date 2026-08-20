@@ -5,6 +5,7 @@ import { buttonVariants } from "@/components/ui/button";
 export default function GameOfTheMonth({ game }) {
     return (
         <section className="py-12 text-center">
+            <div className="mx-auto max-w-2xl rounded-xl border border-border bg-white p-8 shadow-lg sm:p-10">
             <p className="text-sm font-medium uppercase tracking-wide text-muted-foreground">
                 Game of the Month
             </p>
@@ -36,6 +37,7 @@ export default function GameOfTheMonth({ game }) {
                         View game
                     </Link>
                 </div>
+            </div>
             </div>
         </section>
     );

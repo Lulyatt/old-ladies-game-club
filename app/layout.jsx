@@ -16,6 +16,9 @@ const geistMono = Geist_Mono({
 export const metadata = {
   title: "The Old Ladies Game Club",
   description: "Pick a game. Play it. Come back. Talk about it.",
+  icons: {
+    icon: "/favicon.png",
+  },
 };
 
 export default function RootLayout({ children }) {
@@ -24,7 +27,7 @@ export default function RootLayout({ children }) {
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} ${robotoSlab.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col overflow-x-hidden">
+      <body className="flex min-h-full flex-col overflow-x-hidden max-md:h-dvh max-md:snap-y max-md:snap-mandatory max-md:overflow-y-auto">
         <Navbar />
         {children}
       </body>

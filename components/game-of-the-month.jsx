@@ -1,44 +1,47 @@
 import Link from "next/link";
-import { cn } from "@/lib/utils";
-import { buttonVariants } from "@/components/ui/button";
 
 export default function GameOfTheMonth({ game }) {
   return (
-    <section className="py-6 text-center sm:py-12">
-      <div className="mx-auto max-w-xl rounded-xl border border-border bg-[#f5f0e8] p-6 shadow-lg sm:p-10">
-        <p className="text-sm font-medium uppercase tracking-wide text-muted-foreground">
-          Game of the Month
-        </p>
-        <p className="mt-1 text-lg font-semibold">{game.month}</p>
+    <section className="w-full text-center">
+      <Link
+        href={`/games/${game.slug}`}
+        className="mx-auto flex w-fit max-w-full flex-col items-center gap-2 rounded-lg border border-border bg-[#f5f0e8] p-2 shadow-md transition-shadow hover:shadow-lg sm:max-w-[260px] sm:gap-4 sm:p-4"
+      >
+        <img
+          src={game.coverImage}
+          alt={`${game.title} cover art`}
+          className="aspect-[4/3] w-full max-w-[120px] rounded border border-border object-cover sm:max-w-[160px]"
+        />
 
-        <div className="mt-6 flex flex-col items-center gap-6 sm:mt-8 sm:gap-8">
-          <img
-            src={game.coverImage}
-            alt={`${game.title} cover art`}
-            className="w-full max-w-[200px] rounded-lg border border-border sm:max-w-xs"
-          />
-          <div className="flex max-w-xl flex-col items-center">
-            <h2 className="text-2xl font-bold sm:text-3xl">{game.title}</h2>
+        <div className="min-w-0 text-left sm:max-w-xs sm:text-center">
+          <p className="text-[10px] font-medium uppercase tracking-wide text-muted-foreground sm:text-xs">
+            Game of the Month
+          </p>
+          <p className="text-[10px] font-semibold sm:mt-1 sm:text-base">
+            {game.month}
+          </p>
 
-            <p className="mt-2 text-sm text-muted-foreground">
-              {game.genres.join(" • ")}
-            </p>
+          <h2 className="mt-0.5 text-sm font-bold leading-tight sm:mt-0 sm:text-xl">
+            {game.title}
+          </h2>
 
-            <p className="mt-2 text-sm text-muted-foreground">{game.rating}</p>
+          <p className="mt-0.5 text-[10px] leading-tight text-muted-foreground max-[420px]:hidden sm:mt-1.5 sm:text-xs">
+            {game.genres.join(" • ")}
+          </p>
 
-            <p className="mt-4 text-sm text-muted-foreground sm:text-base">
-              {game.description}
-            </p>
+          <p className="text-[10px] text-muted-foreground sm:mt-1 sm:text-xs">
+            {game.rating}
+          </p>
 
-            <Link
-              href={`/games/${game.slug}`}
-              className={cn(buttonVariants(), "mt-6")}
-            >
-              View game
-            </Link>
-          </div>
+          <p className="mt-2 hidden text-xs text-muted-foreground sm:block sm:text-sm">
+            {game.description}
+          </p>
+
+          <span className="mt-2 hidden text-xs font-medium text-primary sm:inline-block sm:mt-4">
+            View game →
+          </span>
         </div>
-      </div>
+      </Link>
     </section>
   );
 }

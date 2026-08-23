@@ -52,11 +52,25 @@
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
+@layer components {
+  .section-label {
+    @apply text-center text-xs font-medium uppercase tracking-wide text-club-poster-text sm:text-sm;
+    -webkit-text-stroke: 1px var(--club-wood);
+    paint-order: stroke fill;
+  }
+
+  .section-subtitle {
+    @apply mx-auto mt-1 max-w-md text-center text-xs text-club-poster-text sm:text-sm;
+    -webkit-text-stroke: 1px var(--club-wood);
+    paint-order: stroke fill;
+  }
+}
+
 :root {
   /* Sampled from hero pixel art */
   --club-wood: #10110b;
   --club-wood-dark: #2a1810;
-  --club-poster-text: #986b39;
+  --club-poster-text: #F5BD02;
   --club-text-muted: #c9baa3;
   --background: oklch(0.96 0.02 85);
   --foreground: oklch(0.28 0.05 40);

@@ -1,9 +1,12 @@
 import { gameOfTheMonth } from "@/data/game-of-the-month";
-import GameOfTheMonth from "@/components/game-of-the-month";
 import BlogPosts from "@/components/blog-posts";
 import { blogPosts } from "@/data/blogPosts";
+import { games } from "@/data/games";
+import BlankroomSection from "@/components/blankroom-section";
 
 export default function Home() {
+  const browseGames = games.filter((g) => g.slug !== gameOfTheMonth.slug);
+
   return (
     <main className="flex flex-1 flex-col overflow-x-hidden">
       <section className="w-full">
@@ -16,34 +19,25 @@ export default function Home() {
         <img
           src="/pagedivider.png"
           alt=""
-          className="block h-auto max-h-[60px] w-full object-cover sm:max-h-[100px]"
+          className="block w-full h-auto"
         />
       </section>
 
-      <section className="relative w-full min-h-[480px] md:min-h-[855px]">
-        <div
-          className="absolute inset-0 bg-[url('/blankroom.png')] bg-cover bg-top bg-no-repeat"
-          aria-hidden
-        />
-
-        <div className="relative z-10 mx-auto w-full max-w-5xl px-4 py-8 sm:px-6 sm:py-12">
-          <GameOfTheMonth game={gameOfTheMonth} />
-        </div>
-      </section>
+      <BlankroomSection game={gameOfTheMonth} games={browseGames} />
 
       <img
         src="/pagedivider.png"
         alt=""
-        className="block h-auto max-h-[60px] w-full object-cover sm:max-h-[100px]"
+        className="block w-full h-auto"
       />
 
-      <section className="relative w-full min-h-[480px] md:min-h-[855px]">
+      <section className="relative w-full min-h-[calc(100vw*941/1672)]">
         <div
-          className="absolute inset-0 bg-[url('/basement.png')] bg-cover bg-top bg-no-repeat saturate-250 brightness-60"
+          className="absolute inset-0 bg-[url('/basement.png')] bg-[length:100%_auto] bg-top bg-no-repeat saturate-250 brightness-60 min-[1400px]:bg-repeat-y"
           aria-hidden
         />
 
-        <div className="relative z-10 mx-auto w-full max-w-5xl px-4 py-8 sm:px-6 sm:py-12">
+        <div className="relative z-10 mx-auto w-full max-w-3xl px-3 py-3 sm:px-4 sm:py-4">
           <BlogPosts blogPosts={blogPosts} />
         </div>
       </section>

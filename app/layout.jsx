@@ -1,5 +1,4 @@
 import { Geist, Geist_Mono } from "next/font/google";
-import { robotoSlab } from "@/lib/fonts";
 import "./globals.css";
 import Navbar from "@/components/navbar";
 
@@ -25,9 +24,10 @@ export default function RootLayout({ children }) {
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${robotoSlab.variable} h-full antialiased`}
+      data-scroll-behavior="smooth"
+      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="flex min-h-full flex-col overflow-x-hidden max-md:h-dvh max-md:snap-y max-md:snap-mandatory max-md:overflow-y-auto">
+      <body className="flex h-dvh min-h-full snap-y snap-mandatory scroll-pt-[var(--nav-height)] flex-col overflow-x-hidden overflow-y-auto">
         <Navbar />
         {children}
       </body>

@@ -2,41 +2,64 @@ import { gameOfTheMonth } from "@/data/game-of-the-month";
 import BlogPosts from "@/components/blog-posts";
 import { blogPosts } from "@/data/blogPosts";
 import { games } from "@/data/games";
-import BlankroomSection from "@/components/blankroom-section";
-import PageDivider from "@/components/page-divider";
-import RoomPanel from "@/components/room-panel";
-import SnapScreen from "@/components/snap-screen";
+import GameOfTheMonth from "@/components/game-of-the-month";
+import BrowseGames from "@/components/browse-games";
+import PageSection from "@/components/page-section";
+
+const backgrounds = {
+  hero: {
+    mobile: "/backgrounds/hero-mobile.png",
+    desktop: "/backgrounds/hero-desktop.png",
+  },
+  blankroom: {
+    mobile: "/backgrounds/blankroom-mobile.png",
+    desktop: "/backgrounds/blankroom-desktop.png",
+  },
+  basement: {
+    mobile: "/backgrounds/basement-mobile.png",
+    desktop: "/backgrounds/basement-desktop.png",
+  },
+};
 
 export default function Home() {
   const browseGames = games.filter((g) => g.slug !== gameOfTheMonth.slug);
 
   return (
     <main className="flex flex-col overflow-x-hidden">
-      <SnapScreen belowNav className="md:h-auto">
-        <div className="relative min-h-0 flex-1 overflow-hidden">
-          <img
-            src="/hero.png"
-            alt="Old Ladies Game Club"
-            className="absolute inset-0 h-full w-full object-cover object-top md:static md:h-auto md:w-full md:object-contain"
-          />
-        </div>
-        <PageDivider />
-      </SnapScreen>
+      <PageSection
+        mobileImage={backgrounds.hero.mobile}
+        desktopImage={backgrounds.hero.desktop}
+        imageAlt="Old Ladies Game Club"
+        belowNav
+        divider
+        desktopFit="natural"
+      />
 
-      <BlankroomSection game={gameOfTheMonth} games={browseGames} />
+      <PageSection
+        mobileImage={backgrounds.blankroom.mobile}
+        desktopImage={backgrounds.blankroom.desktop}
+        divider
+        desktopFit="natural"
+      >
+        <GameOfTheMonth game={gameOfTheMonth} />
+      </PageSection>
 
-      <PageDivider className="max-md:hidden" />
+      <PageSection
+        mobileImage={backgrounds.blankroom.mobile}
+        desktopImage={backgrounds.blankroom.desktop}
+        divider
+        desktopFit="natural"
+      >
+        <BrowseGames games={browseGames} />
+      </PageSection>
 
-      <SnapScreen className="md:h-auto">
-        <RoomPanel
-          image="/basement.png"
-          filterClassName="saturate-250 brightness-60"
-          desktopBgClassName="bg-no-repeat min-[1400px]:bg-repeat-y"
-          className="max-md:h-full"
-        >
-          <BlogPosts blogPosts={blogPosts} />
-        </RoomPanel>
-      </SnapScreen>
+      <PageSection
+        mobileImage={backgrounds.basement.mobile}
+        desktopImage={backgrounds.basement.desktop}
+        desktopFit="natural"
+      >
+        <BlogPosts blogPosts={blogPosts} />
+      </PageSection>
     </main>
   );
 }

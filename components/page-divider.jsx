@@ -1,10 +1,10 @@
 export default function PageDivider({ className = "" }) {
   return (
     <img
-      src="/pagedivider.png"
+      src="/backgrounds/pageDivider.png"
       alt=""
       aria-hidden
-      className={`page-divider ${className}`}
+      className={`block h-auto w-full shrink-0 ${className}`}
     />
   );
 }

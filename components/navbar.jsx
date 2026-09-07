@@ -3,10 +3,10 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { robotoSlab } from "@/lib/fonts";
 
 const navLinks = [
   { label: "Home", href: "/" },
+  { label: "All Games", href: "/all-games" },
   { label: "About", href: "/about" },
   { label: "Blog", href: "/blog" },
   { label: "Forum", href: "/forum" },
@@ -16,10 +16,10 @@ const navLinks = [
 ];
 
 function linkClassName(pathname, href) {
-  return `block rounded-md px-3 py-2 text-sm tracking-wide transition-colors ${
+  return `block rounded-md px-3 py-2 text-sm transition-colors ${
     pathname === href
-      ? "font-semibold text-club-poster-text"
-      : "text-club-text-muted hover:text-club-poster-text"
+      ? "font-semibold text-foreground"
+      : "text-muted-foreground hover:text-foreground"
   }`;
 }
 
@@ -28,19 +28,19 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 shrink-0 border-b-4 border-club-wood-dark bg-club-wood">
-      <div className="relative h-[var(--nav-height)] max-md:overflow-hidden md:h-auto">
+    <header className="sticky top-0 z-50 shrink-0 border-b border-border">
+      <div className="relative h-[var(--nav-height)] overflow-hidden">
         <img
-          src="/pagedivider.png"
+          src="/backgrounds/navbar.png"
           alt=""
           aria-hidden
-          className="block h-full w-full object-cover md:h-auto"
+          className="absolute inset-0 h-full w-full object-cover object-center"
         />
 
-        <nav className="absolute inset-0 flex items-center justify-between px-3 md:px-6 lg:px-12">
+        <nav className="relative z-10 flex h-full items-center justify-between px-3 md:px-6 lg:px-12">
           <Link
             href="/"
-            className={`${robotoSlab.className} text-xs font-black uppercase tracking-wider text-club-poster-text transition-opacity hover:opacity-90 md:text-base`}
+            className="text-xs font-bold uppercase tracking-wider text-foreground transition-opacity hover:opacity-80 md:text-base"
           >
             <span className="md:hidden">TOLGC</span>
             <span className="hidden md:inline">The Old Ladies Game Club</span>
@@ -58,7 +58,7 @@ export default function Navbar() {
 
           <button
             type="button"
-            className="rounded-md px-2 py-1 text-xs font-semibold text-club-poster-text md:hidden"
+            className="rounded-md px-2 py-1 text-xs font-semibold text-foreground md:hidden"
             onClick={() => setMenuOpen((open) => !open)}
             aria-expanded={menuOpen}
             aria-label={menuOpen ? "Close menu" : "Open menu"}
@@ -69,7 +69,7 @@ export default function Navbar() {
       </div>
 
       {menuOpen && (
-        <ul className="border-t border-club-wood-dark/50 bg-club-wood px-4 py-2 md:hidden">
+        <ul className="border-t border-border bg-background px-4 py-2 md:hidden">
           {navLinks.map((link) => (
             <li key={link.href}>
               <Link

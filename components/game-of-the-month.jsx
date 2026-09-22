@@ -5,7 +5,7 @@ export default function GameOfTheMonth({ game }) {
     <section className="w-full text-center">
       <Link
         href={`/games/${game.slug}`}
-        className="mx-auto flex w-fit max-w-[200px] flex-col items-center gap-2 rounded-xl border border-border bg-card p-3 shadow-md transition-shadow hover:shadow-lg md:max-w-[260px] md:gap-4 md:p-4"
+        className="card-raised mx-auto flex w-fit max-w-[200px] flex-col items-center gap-2 p-3 md:max-w-[260px] md:gap-4 md:p-4"
       >
         <img
           src={game.coverImage}

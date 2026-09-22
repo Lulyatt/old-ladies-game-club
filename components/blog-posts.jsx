@@ -1,9 +1,10 @@
 import BlogCard from "@/components/blog-card";
+import Link from "next/link";
 
 export default function BlogPosts({ blogPosts }) {
   return (
     <section className="w-full md:py-2">
-      <h2 className="text-center text-base font-bold md:text-2xl">Blog Posts</h2>
+      <h2 className="text-center text-base font-bold md:text-2xl"><Link href="/blog">Blog Posts</Link></h2>
       <p className="mx-auto mt-1 hidden max-w-md text-center text-sm text-muted-foreground md:block">
         Read the latest from the club.
       </p>

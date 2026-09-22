@@ -13,7 +13,8 @@ Each month the community picks a Game of the Month, members play it, then return
 - [Tailwind CSS](https://tailwindcss.com/)
 - [shadcn/ui](https://ui.shadcn.com/)
 
-**Planned:** Firebase (auth + database), Steam API (game metadata)
+**In use:** Steam Store API (game metadata)  
+**Planned:** Firebase (auth + database)
 
 ## Current features
 
@@ -21,7 +22,7 @@ Each month the community picks a Game of the Month, members play it, then return
 - [x] Navbar (styled to match hero)
 - [x] About page
 - [x] Game of the Month section (hardcoded data)
-- [ ] Game pages
+- [x] Game pages
 - [ ] Reviews & ratings
 - [ ] User authentication
 - [ ] Monthly club history

@@ -4,7 +4,7 @@ export default function GameCard({ game }) {
   return (
     <Link
       href={`/games/${game.slug}`}
-      className="flex w-[200px] shrink-0 snap-center flex-col gap-2 rounded-xl border border-border bg-card p-3 shadow-md transition-shadow hover:shadow-lg md:w-full md:max-w-none md:rounded-lg md:p-3 md:shadow-sm"
+      className="card-raised flex w-[200px] shrink-0 snap-center flex-col gap-2 p-3 md:w-full md:max-w-none md:p-3"
     >
       <img
         src={game.coverImage}

@@ -1,8 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "@/lib/firebase";
 
 const navLinks = [
   { label: "Home", href: "/" },
@@ -12,7 +14,6 @@ const navLinks = [
   { label: "Forum", href: "/forum" },
   { label: "Reviews", href: "/reviews" },
   { label: "My Games", href: "/my-games" },
-  { label: "Login", href: "/login" },
 ];
 
 function linkClassName(pathname, href) {
@@ -26,6 +27,51 @@ function linkClassName(pathname, href) {
 export default function Navbar() {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [user, setUser] = useState(null);
+  const [authReady, setAuthReady] = useState(false);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+      setAuthReady(true);
+    });
+
+    return unsubscribe;
+  }, []);
+
+  const visibleNavLinks = navLinks.filter(
+    (link) => link.href !== "/my-games" || user
+  );
+
+  function AuthControls({ mobile = false }) {
+    if (!authReady) return null;
+
+    if (user) {
+      return (
+        <li>
+          <Link
+            href="/my-account"
+            className={linkClassName(pathname, "/my-account")}
+            onClick={mobile ? () => setMenuOpen(false) : undefined}
+          >
+            My Account
+          </Link>
+        </li>
+      );
+    }
+
+    return (
+      <li>
+        <Link
+          href="/login"
+          className={linkClassName(pathname, "/login")}
+          onClick={mobile ? () => setMenuOpen(false) : undefined}
+        >
+          Login
+        </Link>
+      </li>
+    );
+  }
 
   return (
     <header className="sticky top-0 z-50 shrink-0 border-b border-border">
@@ -47,13 +93,14 @@ export default function Navbar() {
           </Link>
 
           <ul className="hidden items-center gap-1 md:flex lg:gap-2">
-            {navLinks.map((link) => (
+            {visibleNavLinks.map((link) => (
               <li key={link.href}>
                 <Link href={link.href} className={linkClassName(pathname, link.href)}>
                   {link.label}
                 </Link>
               </li>
             ))}
+            <AuthControls />
           </ul>
 
           <button
@@ -70,7 +117,7 @@ export default function Navbar() {
 
       {menuOpen && (
         <ul className="border-t border-border bg-background px-4 py-2 md:hidden">
-          {navLinks.map((link) => (
+          {visibleNavLinks.map((link) => (
             <li key={link.href}>
               <Link
                 href={link.href}
@@ -81,6 +128,7 @@ export default function Navbar() {
               </Link>
             </li>
           ))}
+          <AuthControls mobile />
         </ul>
       )}
     </header>

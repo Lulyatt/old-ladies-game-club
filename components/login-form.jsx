@@ -8,6 +8,7 @@ import {
   signInWithEmailAndPassword,
   signInWithPopup,
 } from "firebase/auth";
+import { ensureUserProfile } from "@/lib/ensure-user-profile";
 import { auth } from "@/lib/firebase";
 
 export default function LoginForm() {
@@ -23,7 +24,8 @@ export default function LoginForm() {
     setLoading(true);
 
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      await ensureUserProfile(userCredential.user);
       router.push("/");
     } catch (signInError) {
       setError(signInError.message);
@@ -37,7 +39,8 @@ export default function LoginForm() {
     setLoading(true);
 
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      await ensureUserProfile(userCredential.user);
       router.push("/");
     } catch (signUpError) {
       setError(signUpError.message);
@@ -52,7 +55,8 @@ export default function LoginForm() {
 
     try {
       const provider = new GoogleAuthProvider();
-      await signInWithPopup(auth, provider);
+      const result = await signInWithPopup(auth, provider);
+      await ensureUserProfile(result.user);
       router.push("/");
     } catch (googleError) {
       setError(googleError.message);

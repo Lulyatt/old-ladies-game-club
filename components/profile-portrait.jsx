@@ -1,6 +1,6 @@
 export default function ProfilePortrait({ src, alt, fallbackInitial }) {
   return (
-    <div className="profile-portrait-frame shrink-0">
+    <div className="profile-portrait-frame mx-auto max-w-full shrink-0">
       <div className="profile-portrait-oval overflow-hidden bg-muted">
         {src ? (
           <img src={src} alt={alt} className="h-full w-full object-cover" />

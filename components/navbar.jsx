@@ -17,11 +17,10 @@ const navLinks = [
 ];
 
 function linkClassName(pathname, href) {
-  return `block rounded-md px-3 py-2 text-sm transition-colors ${
-    pathname === href
-      ? "font-semibold text-foreground"
-      : "text-muted-foreground hover:text-foreground"
-  }`;
+  return `block rounded-md px-2 py-2 text-lg transition-colors md:text-xl ${pathname === href
+      ? "font-semibold text-[var(--nav-foreground)]"
+      : "text-muted-foreground hover:text-[var(--nav-foreground)]"
+    }`;
 }
 
 export default function Navbar() {
@@ -74,7 +73,7 @@ export default function Navbar() {
   }
 
   return (
-    <header className="sticky top-0 z-50 shrink-0 border-b border-border">
+    <header className="sticky top-0 z-50 shrink-0 border-b border-[var(--nav-border)] font-[family-name:var(--font-nav)]">
       <div className="relative h-[var(--nav-height)] overflow-hidden">
         <img
           src="/backgrounds/navbar.png"
@@ -86,10 +85,12 @@ export default function Navbar() {
         <nav className="relative z-10 flex h-full items-center justify-between px-3 md:px-6 lg:px-12">
           <Link
             href="/"
-            className="text-xs font-bold uppercase tracking-wider text-foreground transition-opacity hover:opacity-80 md:text-base"
+            className="text-xs font-bold uppercase tracking-wider text-[var(--nav-foreground)] transition-opacity hover:opacity-80 md:text-base"
           >
-            <span className="md:hidden">TOLGC</span>
-            <span className="hidden md:inline">The Old Ladies Game Club</span>
+            
+              <img src="/backgrounds/tolgc_plaque.png" alt="The Old Ladies Game Club" className="h-12 w-auto md:hidden" />
+              <img src="/backgrounds/tolgc_plaque.png" alt="The Old Ladies Game Club" className="hidden h-20 w-auto md:block" />
+          
           </Link>
 
           <ul className="hidden items-center gap-1 md:flex lg:gap-2">
@@ -105,7 +106,7 @@ export default function Navbar() {
 
           <button
             type="button"
-            className="rounded-md px-2 py-1 text-xs font-semibold text-foreground md:hidden"
+            className="rounded-md px-2 py-1 text-base font-semibold text-[var(--nav-foreground)] md:hidden"
             onClick={() => setMenuOpen((open) => !open)}
             aria-expanded={menuOpen}
             aria-label={menuOpen ? "Close menu" : "Open menu"}

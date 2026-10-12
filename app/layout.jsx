@@ -1,4 +1,4 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, VT323 } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/navbar";
 
@@ -11,6 +11,13 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
+
+const vt323 = VT323({
+  variable: "--font-nav",
+  subsets: ["latin"],
+  weight: "400",
+});
+
 
 export const metadata = {
   title: "The Old Ladies Game Club",
@@ -25,7 +32,7 @@ export default function RootLayout({ children }) {
     <html
       lang="en"
       data-scroll-behavior="smooth"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${vt323.variable} h-full antialiased`}
     >
       <body className="flex h-dvh min-h-full snap-y snap-mandatory scroll-pt-[var(--nav-height)] flex-col overflow-x-hidden overflow-y-auto">
         <Navbar />

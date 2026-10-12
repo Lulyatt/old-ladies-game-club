@@ -1,4 +1,5 @@
-import GameTrailer from "@/components/game-trailer";
+import GameScreenshotsCarousel from "@/components/game-screenshots-carousel";
+import GameTrailersCarousel from "@/components/game-trailers-carousel";
 
 const CONTROLLER_LABELS = {
   full: "Full controller support",
@@ -17,7 +18,7 @@ function DetailSection({ title, children }) {
   return (
     <section className="mt-10">
       <h2 className="text-lg font-semibold">{title}</h2>
-      <div className="mt-3">{children}</div>
+      <div className="mt-3 min-w-0 max-w-full">{children}</div>
     </section>
   );
 }
@@ -145,30 +146,20 @@ export default function GameSteamDetails({ game }) {
 
       {game.screenshots.length ? (
         <DetailSection title="Screenshots">
-          <div className="grid gap-3 sm:grid-cols-2">
-            {game.screenshots.map((shot) => (
-              <img
-                key={shot.id}
-                src={shot.path_full}
-                alt={`${game.title} screenshot`}
-                className="aspect-video w-full rounded-lg border border-border object-cover"
-              />
-            ))}
-          </div>
+          <GameScreenshotsCarousel
+            screenshots={game.screenshots}
+            gameTitle={game.title}
+          />
         </DetailSection>
       ) : null}
 
       {game.movies.length ? (
         <DetailSection title="Trailers">
-          <div className="grid gap-4 sm:grid-cols-2">
-            {game.movies.map((movie) => (
-              <GameTrailer
-                key={movie.id}
-                movie={movie}
-                steamStoreUrl={game.steamStoreUrl}
-              />
-            ))}
-          </div>
+          <GameTrailersCarousel
+            movies={game.movies}
+            gameTitle={game.title}
+            steamStoreUrl={game.steamStoreUrl}
+          />
         </DetailSection>
       ) : null}
 

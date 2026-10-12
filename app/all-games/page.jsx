@@ -6,6 +6,8 @@ export const metadata = {
   description: "Browse every game in the club.",
 };
 
+export const revalidate = 60;
+
 export default async function AllGamesPage() {
   const allGames = await getAllGames();
 

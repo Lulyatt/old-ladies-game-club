@@ -1,0 +1,45 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    match /users/{userId} {
+      allow read: if request.auth != null && request.auth.uid == userId;
+      allow create: if request.auth != null
+                    && request.auth.uid == userId
+                    && request.resource.data.keys().hasAll(['username', 'avatarId', 'createdAt'])
+                    && request.resource.data.username is string
+                    && request.resource.data.avatarId is string;
+      allow update: if request.auth != null && request.auth.uid == userId;
+      allow delete: if false;
+    }
+
+    match /users/{userId}/favourites/{gameSlug} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+
+    match /reviews/{reviewId} {
+      allow read: if true;
+      allow create: if request.auth != null
+                    && request.resource.data.userId == request.auth.uid
+                    && request.resource.data.username is string
+                    && request.resource.data.gameSlug is string
+                    && request.resource.data.gameTitle is string
+                    && request.resource.data.coverImage is string
+                    && request.resource.data.reviewText is string
+                    && request.resource.data.score is number
+                    && request.resource.data.aesthetics is string
+                    && request.resource.data.valueForMoney is string
+                    && request.resource.data.createdAt == request.time;
+      allow update: if request.auth != null
+                    && resource.data.userId == request.auth.uid
+                    && request.resource.data.userId == request.auth.uid
+                    && request.resource.data.reviewText is string
+                    && request.resource.data.score is number
+                    && request.resource.data.aesthetics is string
+                    && request.resource.data.valueForMoney is string;
+      allow delete: if request.auth != null
+                    && resource.data.userId == request.auth.uid;
+    }
+  }
+}

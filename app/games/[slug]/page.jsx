@@ -1,8 +1,11 @@
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { notFound } from "next/navigation";
+import GameReviews from "@/components/game-reviews";
 import GameSteamDetails from "@/components/game-steam-details";
 import { getGameBySlug } from "@/lib/get-game";
+
+export const revalidate = 60;
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
@@ -27,7 +30,7 @@ export default async function GamePage({ params }) {
   }
 
   return (
-    <main className="mx-auto max-w-3xl flex-1 px-6 py-16">
+    <main className="mx-auto w-full min-w-0 max-w-5xl flex-1 px-4 py-16 md:px-6">
       <Link
         href="/all-games"
         className="mb-6 inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
@@ -53,6 +56,14 @@ export default async function GamePage({ params }) {
       <p className="mt-6 text-muted-foreground">{game.description}</p>
 
       <GameSteamDetails game={game} />
+
+      <GameReviews
+        game={{
+          slug: game.slug,
+          title: game.title,
+          coverImage: game.coverImage,
+        }}
+      />
     </main>
   );
 }

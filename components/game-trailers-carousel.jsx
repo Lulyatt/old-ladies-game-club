@@ -78,16 +78,12 @@ export default function GameTrailersCarousel({ movies, gameTitle, steamStoreUrl 
         onPointerCancel={endDrag}
       >
         {movies.map((movie) => (
-          <div key={movie.id} className="w-80 max-w-[85vw] shrink-0">
-            <GameTrailer movie={movie} steamStoreUrl={steamStoreUrl} />
+          <div key={movie.id} className="w-64 max-w-[50vw] shrink-0">
+            <GameTrailer movie={movie}/>
           </div>
         ))}
       </div>
-      {total > 1 ? (
-        <p className="mt-2 text-xs text-muted-foreground">
-          Drag or swipe sideways to browse {total} trailers
-        </p>
-      ) : null}
+      
     </div>
   );
 }

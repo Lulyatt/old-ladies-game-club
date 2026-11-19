@@ -1,10 +1,12 @@
-import { gameOfTheMonth } from "@/data/game-of-the-month";
 import BlogPosts from "@/components/blog-posts";
 import { blogPosts } from "@/data/blogPosts";
-import { games } from "@/data/games";
 import GameOfTheMonth from "@/components/game-of-the-month";
 import BrowseGames from "@/components/browse-games";
 import PageSection from "@/components/page-section";
+import { fetchGamesForHomeBrowse } from "@/lib/get-game";
+import { fetchGameOfTheMonth } from "@/lib/game-of-the-month";
+
+export const revalidate = 60;
 
 const backgrounds = {
   hero: {
@@ -21,8 +23,10 @@ const backgrounds = {
   },
 };
 
-export default function Home() {
-  const browseGames = games.filter((g) => g.slug !== gameOfTheMonth.slug);
+export default async function Home() {
+  const gameOfTheMonth = await fetchGameOfTheMonth();
+  const featuredSlug = gameOfTheMonth?.slug ?? null;
+  const browseGames = await fetchGamesForHomeBrowse(featuredSlug);
 
   return (
     <main className="flex flex-col overflow-x-hidden">
@@ -35,14 +39,16 @@ export default function Home() {
         desktopFit="natural"
       />
 
-      <PageSection
-        mobileImage={backgrounds.blankroom.mobile}
-        desktopImage={backgrounds.blankroom.desktop}
-        divider
-        desktopFit="natural"
-      >
-        <GameOfTheMonth game={gameOfTheMonth} />
-      </PageSection>
+      {gameOfTheMonth ? (
+        <PageSection
+          mobileImage={backgrounds.blankroom.mobile}
+          desktopImage={backgrounds.blankroom.desktop}
+          divider
+          desktopFit="natural"
+        >
+          <GameOfTheMonth game={gameOfTheMonth} />
+        </PageSection>
+      ) : null}
 
       <PageSection
         mobileImage={backgrounds.blankroom.mobile}

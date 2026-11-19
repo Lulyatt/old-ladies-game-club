@@ -1,6 +1,6 @@
 "use client";
 
-export default function GameTrailer({ movie, steamStoreUrl }) {
+export default function GameTrailer({ movie }) {
   return (
     <figure className="overflow-hidden rounded-lg border border-border">
       <video
@@ -12,19 +12,7 @@ export default function GameTrailer({ movie, steamStoreUrl }) {
       >
         <source src={movie.hls_h264} type="application/x-mpegURL" />
       </video>
-      <figcaption className="border-t border-border px-3 py-2 text-sm">
-        <p className="font-medium">{movie.name}</p>
-        {steamStoreUrl ? (
-          <a
-            href={steamStoreUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-1 inline-block text-xs text-muted-foreground underline-offset-4 hover:underline"
-          >
-            Watch on Steam if video does not play
-          </a>
-        ) : null}
-      </figcaption>
+      
     </figure>
   );
 }

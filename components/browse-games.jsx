@@ -9,10 +9,12 @@ export default function BrowseGames({ games }) {
         Explore games the club has played and reviewed.
       </p>
 
-      <div className="mt-4 flex w-full snap-x snap-mandatory snap-always gap-4 overflow-x-auto pb-2 scroll-ps-[calc(50%-100px)] scroll-pe-[calc(50%-100px)] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:mt-5 md:grid md:grid-cols-3 md:gap-4 md:overflow-visible md:snap-none md:scroll-ps-0 md:scroll-pe-0">
-        {games.map((game) => (
-          <GameCard key={game.slug} game={game} />
-        ))}
+      <div className="mt-4 w-full min-w-0 max-w-full overflow-hidden md:mt-5">
+        <div className="flex w-full min-w-0 snap-x snap-mandatory snap-always gap-4 overflow-x-auto pb-2 scroll-ps-[calc(50%-100px)] scroll-pe-[calc(50%-100px)] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:grid md:grid-cols-3 md:gap-4 md:overflow-visible md:snap-none md:scroll-ps-0 md:scroll-pe-0">
+          {games.map((game) => (
+            <GameCard key={game.slug} game={game} />
+          ))}
+        </div>
       </div>
     </section>
   );

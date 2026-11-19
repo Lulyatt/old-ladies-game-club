@@ -1,10 +1,10 @@
-import React from 'react'
+import ForumPage from "@/components/forum-page";
 
-export default function ForumPage() {
-    return (
-      <main className="mx-auto max-w-5xl flex-1 px-6 py-16">
-        <h1 className="text-3xl font-bold">Forum</h1>
-        <p className="mt-4 text-muted-foreground">Coming soon.</p>
-      </main>
-    );
-  }
+export const metadata = {
+  title: "Forum | The Old Ladies Game Club",
+  description: "Chat with the club.",
+};
+
+export default function ForumRoutePage() {
+  return <ForumPage />;
+}

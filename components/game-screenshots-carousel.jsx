@@ -73,7 +73,7 @@ export default function GameScreenshotsCarousel({ screenshots, gameTitle }) {
         onPointerCancel={endDrag}
       >
         {screenshots.map((shot, index) => (
-          <figure key={shot.id} className="m-0 w-80 max-w-[85vw] shrink-0">
+          <figure key={shot.id} className="m-0 w-64 max-w-[50vw] shrink-0">
             <img
               src={shot.path_full}
               alt={`${gameTitle} screenshot ${index + 1} of ${total}`}
@@ -83,11 +83,6 @@ export default function GameScreenshotsCarousel({ screenshots, gameTitle }) {
           </figure>
         ))}
       </div>
-      {total > 1 ? (
-        <p className="mt-2 text-xs text-muted-foreground">
-          Drag or swipe sideways to browse {total} screenshots
-        </p>
-      ) : null}
     </div>
   );
 }

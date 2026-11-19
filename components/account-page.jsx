@@ -9,9 +9,8 @@ import AccountReviewsSection from "@/components/account-reviews-section";
 import { ensureUserProfile } from "@/lib/ensure-user-profile";
 import { auth } from "@/lib/firebase";
 import { getUserProfile } from "@/lib/get-user-profile";
+import { fetchForumPostCountByUserId } from "@/lib/forum";
 import { fetchReviewsByUserId } from "@/lib/reviews";
-
-const PLACEHOLDER_FORUM_POSTS = 0;
 
 export default function AccountPage() {
   const router = useRouter();
@@ -24,6 +23,8 @@ export default function AccountPage() {
   const [reviews, setReviews] = useState([]);
   const [reviewsLoading, setReviewsLoading] = useState(false);
   const [reviewsError, setReviewsError] = useState("");
+  const [forumPostCount, setForumPostCount] = useState(0);
+  const [forumCountError, setForumCountError] = useState("");
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -108,6 +109,37 @@ export default function AccountPage() {
     };
   }, [user]);
 
+  useEffect(() => {
+    if (!user) {
+      setForumPostCount(0);
+      setForumCountError("");
+      return;
+    }
+
+    let cancelled = false;
+
+    async function loadForumCount() {
+      setForumCountError("");
+
+      try {
+        const count = await fetchForumPostCountByUserId(user.uid);
+        if (!cancelled) {
+          setForumPostCount(count);
+        }
+      } catch (error) {
+        if (!cancelled) {
+          setForumCountError(error.message);
+        }
+      }
+    }
+
+    loadForumCount();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [user]);
+
   async function handleLogout() {
     setLoggingOut(true);
 
@@ -147,7 +179,7 @@ export default function AccountPage() {
   const profile = getUserProfile(user, {
     firestoreProfile,
     reviewCount: reviews.length,
-    forumPostCount: PLACEHOLDER_FORUM_POSTS,
+    forumPostCount,
   });
 
   return (
@@ -161,6 +193,12 @@ export default function AccountPage() {
       {reviewsError ? (
         <p className="mb-4 text-sm text-destructive" role="alert">
           {reviewsError}
+        </p>
+      ) : null}
+
+      {forumCountError ? (
+        <p className="mb-4 text-sm text-destructive" role="alert">
+          {forumCountError}
         </p>
       ) : null}
 

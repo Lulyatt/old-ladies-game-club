@@ -17,7 +17,9 @@ export default function GameOfTheMonth({ game }) {
           <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
             Game of the Month
           </p>
-          <p className="text-sm font-semibold md:text-base">{game.month}</p>
+          {game.month ? (
+            <p className="text-sm font-semibold md:text-base">{game.month}</p>
+          ) : null}
 
           <h2 className="mt-1 text-lg font-bold leading-tight md:text-xl">
             {game.title}

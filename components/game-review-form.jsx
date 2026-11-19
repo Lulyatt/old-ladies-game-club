@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { ChevronDown } from "lucide-react";
 import { useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "@/lib/firebase";
@@ -27,7 +28,8 @@ export default function GameReviewForm({ game, onSaved }) {
   const [loading, setLoading] = useState(false);
   const [loadingExisting, setLoadingExisting] = useState(true);
   const [error, setError] = useState("");
-  const [isEditing, setIsEditing] = useState(false);
+  const [hasExistingReview, setHasExistingReview] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -43,6 +45,7 @@ export default function GameReviewForm({ game, onSaved }) {
 
     if (!user) {
       setLoadingExisting(false);
+      setHasExistingReview(false);
       return;
     }
 
@@ -60,7 +63,9 @@ export default function GameReviewForm({ game, onSaved }) {
           setAesthetics(existing.aesthetics ?? "not_bad");
           setValueForMoney(existing.valueForMoney ?? "about_right");
           setScore(String(existing.score ?? 4.5));
-          setIsEditing(true);
+          setHasExistingReview(true);
+        } else {
+          setHasExistingReview(false);
         }
       } catch (loadError) {
         if (!cancelled) {
@@ -90,13 +95,15 @@ export default function GameReviewForm({ game, onSaved }) {
       await saveReview({
         user,
         username: profile.username,
+        avatarId: profile.avatarId,
         game,
         reviewText,
         aesthetics,
         valueForMoney,
         score,
       });
-      setIsEditing(true);
+      setHasExistingReview(true);
+      setIsOpen(false);
       onSaved?.();
     } catch (submitError) {
       setError(submitError.message);
@@ -105,121 +112,150 @@ export default function GameReviewForm({ game, onSaved }) {
     }
   }
 
+  const toggleLabel = hasExistingReview
+    ? "Update your review"
+    : "Share your thoughts";
+
   if (!authReady || loadingExisting) {
     return (
-      <p className="mt-6 text-sm text-muted-foreground">Loading review form…</p>
-    );
-  }
-
-  if (!user) {
-    return (
-      <div className="card-raised mt-8 p-5">
-        <h2 className="text-lg font-bold">Write a review</h2>
-        <p className="mt-2 text-sm text-muted-foreground">
-          Log in to share your thoughts with the club.
-        </p>
-        <Link
-          href="/login"
-          className="mt-4 inline-block rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground"
-        >
-          Go to Login
-        </Link>
+      <div className="card-raised p-5">
+        <p className="text-sm text-muted-foreground">Loading review form…</p>
       </div>
     );
   }
 
   return (
-    <form onSubmit={handleSubmit} className="card-raised mt-8 flex flex-col gap-4 p-5">
-      <div>
-        <h2 className="text-lg font-bold">
-          {isEditing ? "Update your review" : "Write a review"}
-        </h2>
-        <p className="mt-1 text-sm text-muted-foreground">
-          Share your verdict with the club. You can edit this later.
-        </p>
-      </div>
-
-      <div className="flex flex-col gap-2">
-        <label htmlFor="review-text" className="text-sm font-medium">
-          Your review
-        </label>
-        <textarea
-          id="review-text"
-          required
-          rows={5}
-          value={reviewText}
-          onChange={(event) => setReviewText(event.target.value)}
-          className="rounded-lg border border-border bg-background px-3 py-2 text-sm"
+    <div className="card-raised p-5">
+      <button
+        type="button"
+        aria-expanded={isOpen}
+        onClick={() => setIsOpen((open) => !open)}
+        className="flex w-full items-center justify-between gap-3 text-left"
+      >
+        <span className="text-lg font-bold">{toggleLabel}</span>
+        <ChevronDown
+          className={`size-5 shrink-0 text-muted-foreground transition-transform ${
+            isOpen ? "rotate-180" : ""
+          }`}
+          aria-hidden
         />
-      </div>
+      </button>
 
-      <div className="flex flex-col gap-2">
-        <label htmlFor="review-aesthetics" className="text-sm font-medium">
-          Aesthetics
-        </label>
-        <select
-          id="review-aesthetics"
-          value={aesthetics}
-          onChange={(event) => setAesthetics(event.target.value)}
-          className="rounded-lg border border-border bg-background px-3 py-2 text-sm"
-        >
-          {AESTHETICS_OPTIONS.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
-      </div>
+      {isOpen ? (
+        <div className="mt-4 border-t border-border pt-4">
+          {!user ? (
+            <>
+              <p className="text-sm text-muted-foreground">
+                Log in to share your thoughts with the club.
+              </p>
+              <Link
+                href="/login"
+                className="mt-4 inline-block rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground"
+              >
+                Go to Login
+              </Link>
+            </>
+          ) : (
+            <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+              <p className="text-sm text-muted-foreground">
+                Share your verdict with the club. You can edit this later.
+              </p>
 
-      <div className="flex flex-col gap-2">
-        <label htmlFor="review-value" className="text-sm font-medium">
-          Value for money
-        </label>
-        <select
-          id="review-value"
-          value={valueForMoney}
-          onChange={(event) => setValueForMoney(event.target.value)}
-          className="rounded-lg border border-border bg-background px-3 py-2 text-sm"
-        >
-          {VALUE_FOR_MONEY_OPTIONS.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
-      </div>
+              <div className="flex flex-col gap-2">
+                <label htmlFor="review-text" className="text-sm font-medium">
+                  Your review
+                </label>
+                <textarea
+                  id="review-text"
+                  required
+                  rows={5}
+                  value={reviewText}
+                  onChange={(event) => setReviewText(event.target.value)}
+                  className="rounded-lg border border-border bg-background px-3 py-2 text-sm"
+                />
+              </div>
 
-      <div className="flex flex-col gap-2">
-        <label htmlFor="review-score" className="text-sm font-medium">
-          Score
-        </label>
-        <select
-          id="review-score"
-          value={score}
-          onChange={(event) => setScore(event.target.value)}
-          className="rounded-lg border border-border bg-background px-3 py-2 text-sm"
-        >
-          {SCORE_OPTIONS.map((option) => (
-            <option key={option} value={option}>
-              ⭐ {formatScoreNumber(option)} / 5
-            </option>
-          ))}
-        </select>
-      </div>
+              <div className="flex flex-col gap-2">
+                <label htmlFor="review-aesthetics" className="text-sm font-medium">
+                  Aesthetics
+                </label>
+                <select
+                  id="review-aesthetics"
+                  value={aesthetics}
+                  onChange={(event) => setAesthetics(event.target.value)}
+                  className="rounded-lg border border-border bg-background px-3 py-2 text-sm"
+                >
+                  {AESTHETICS_OPTIONS.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
 
-      {error ? (
-        <p className="text-sm text-destructive" role="alert">
+              <div className="flex flex-col gap-2">
+                <label htmlFor="review-value" className="text-sm font-medium">
+                  Value for money
+                </label>
+                <select
+                  id="review-value"
+                  value={valueForMoney}
+                  onChange={(event) => setValueForMoney(event.target.value)}
+                  className="rounded-lg border border-border bg-background px-3 py-2 text-sm"
+                >
+                  {VALUE_FOR_MONEY_OPTIONS.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="flex flex-col gap-2">
+                <label htmlFor="review-score" className="text-sm font-medium">
+                  Score
+                </label>
+                <select
+                  id="review-score"
+                  value={score}
+                  onChange={(event) => setScore(event.target.value)}
+                  className="rounded-lg border border-border bg-background px-3 py-2 text-sm"
+                >
+                  {SCORE_OPTIONS.map((option) => (
+                    <option key={option} value={option}>
+                      ⭐ {formatScoreNumber(option)} / 5
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {error ? (
+                <p className="text-sm text-destructive" role="alert">
+                  {error}
+                </p>
+              ) : null}
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-fit rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground disabled:opacity-50"
+              >
+                {loading
+                  ? "Saving…"
+                  : hasExistingReview
+                    ? "Update review"
+                    : "Submit review"}
+              </button>
+            </form>
+          )}
+        </div>
+      ) : null}
+
+      {!isOpen && error ? (
+        <p className="mt-2 text-sm text-destructive" role="alert">
           {error}
         </p>
       ) : null}
-
-      <button
-        type="submit"
-        disabled={loading}
-        className="w-fit rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground disabled:opacity-50"
-      >
-        {loading ? "Saving…" : isEditing ? "Update review" : "Submit review"}
-      </button>
-    </form>
+    </div>
   );
 }
